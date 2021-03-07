@@ -1,21 +1,23 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from 'express';
+
+import routes from './routes';
 
 class App {
   public server: Express;
 
   constructor() {
     this.server = express();
+
+    this.middlewares();
     this.routes();
   }
 
-  routes() {
-    this.server.get("/hello", (req: Request, res: Response) => {
-      console.log(req.body);
+  private middlewares(): void {
+    this.server.use(express.json());
+  }
 
-      return res.json({
-        message: "Hello World",
-      });
-    });
+  async routes(): Promise<void> {
+    this.server.use(routes);
   }
 }
 
