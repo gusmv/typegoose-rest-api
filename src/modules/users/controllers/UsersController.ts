@@ -10,7 +10,7 @@ import ShowUsersService from '@modules/users/services/ShowUsersService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 
 class UsersController {
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<Response> {
     const { name, birthDate, email, password } = req.body;
 
     const createUserService = new CreateUserService();
@@ -25,7 +25,7 @@ class UsersController {
     return res.status(201).json(plainToClass(User, user));
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<Response> {
     const { userId } = req.params;
 
     Object.keys(req.body).forEach(
@@ -42,7 +42,7 @@ class UsersController {
     return res.json(classToClass(user));
   }
 
-  async show(req: Request, res: Response) {
+  async show(req: Request, res: Response): Promise<Response> {
     const { userId } = req.params;
 
     const showUserService = new ShowUserService();
@@ -52,7 +52,7 @@ class UsersController {
     return res.json(plainToClass(User, user));
   }
 
-  async index(req: Request, res: Response) {
+  async index(req: Request, res: Response): Promise<Response> {
     const showUsersService = new ShowUsersService();
 
     const users = await showUsersService.execute();
@@ -60,7 +60,7 @@ class UsersController {
     return res.json(plainToClass(User, users));
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<Response> {
     const { userId } = req.params;
 
     const deleteUserService = new DeleteUserService();
