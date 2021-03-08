@@ -1,11 +1,6 @@
-import {
-  prop as column,
-  getModelForClass,
-  modelOptions,
-  plugin,
-} from '@typegoose/typegoose';
-
-import mhidden from 'mongoose-hidden';
+import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
+import { Types } from 'mongoose';
+import { Expose, Exclude } from 'class-transformer';
 
 @modelOptions({
   schemaOptions: {
@@ -13,19 +8,30 @@ import mhidden from 'mongoose-hidden';
     timestamps: true,
   },
 })
-@plugin(mhidden())
+@Exclude()
 export class User {
-  @column()
+  @Expose()
+  public id: Types.ObjectId;
+
+  @Expose()
+  @prop()
   public name: string;
 
-  @column()
+  @Expose()
+  @prop()
   public birthDate: Date;
 
-  @column()
+  @Expose()
+  @prop()
   public email: string;
 
-  @column({ hide: true })
+  @prop()
+  @Exclude()
   public password: string;
+
+  @prop()
+  @Exclude()
+  __v: number;
 }
 
 export default getModelForClass(User);

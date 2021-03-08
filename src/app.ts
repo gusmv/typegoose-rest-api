@@ -1,5 +1,7 @@
 import express, { Express } from 'express';
 
+import { errors } from 'celebrate';
+
 import routes from './routes';
 
 class App {
@@ -7,16 +9,17 @@ class App {
 
   constructor() {
     this.server = express();
+    this.server.use(express.json());
 
-    this.middlewares();
     this.routes();
+    this.middlewares();
   }
 
   private middlewares(): void {
-    this.server.use(express.json());
+    this.server.use(errors());
   }
 
-  async routes(): Promise<void> {
+  private routes(): void {
     this.server.use(routes);
   }
 }

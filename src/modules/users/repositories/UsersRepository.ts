@@ -4,7 +4,6 @@ import UserModel, { User } from '../schemas/User';
 
 import IUsersRepository from '../dtos/IUsersRepository';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
-import IUpdateUserDTO from '../dtos/IUpdateUserDTO';
 
 class UsersRepository implements IUsersRepository {
   async findById(userId: Types.ObjectId): Promise<User | null> {
@@ -25,16 +24,18 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  async save(userData: IUpdateUserDTO): Promise<User | null> {
-    const user = await UserModel.findByIdAndUpdate(userData.userId, userData);
-
-    return user;
+  async save(userId: Types.ObjectId, userData: User): Promise<void> {
+    await UserModel.findByIdAndUpdate(userId, userData);
   }
 
   async list(): Promise<User[]> {
     const users = await UserModel.find();
 
     return users;
+  }
+
+  async delete(userId: Types.ObjectId): Promise<void> {
+    await UserModel.findByIdAndDelete(userId);
   }
 }
 

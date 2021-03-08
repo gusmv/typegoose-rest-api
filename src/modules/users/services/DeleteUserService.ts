@@ -1,20 +1,19 @@
 import { Types } from 'mongoose';
 
-import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
-class ShowUserService {
+class DeleteUserService {
   private repository = UsersRepository;
 
-  async execute(userId: Types.ObjectId): Promise<User> {
+  async execute(userId: Types.ObjectId): Promise<void> {
     const user = await this.repository.findById(userId);
 
     if (!user) {
       throw new Error('User not found.');
     }
 
-    return user;
+    await this.repository.delete(userId);
   }
 }
 
-export default ShowUserService;
+export default DeleteUserService;

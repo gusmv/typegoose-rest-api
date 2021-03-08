@@ -1,9 +1,10 @@
-import "dotenv/config";
+import 'dotenv/config';
+import 'reflect-metadata';
 
-import "./database";
-import App from "./app";
+import './database';
+import App from './app';
 
-import config from "@config/express";
+import config from '@config/express';
 
 const app = new App();
 

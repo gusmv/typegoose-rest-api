@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { celebrate, Segments, Joi } from 'celebrate';
+import { celebrate, Segments } from 'celebrate';
+import Joi from '@utils/Joi';
 
 import UsersController from '../controllers/UsersController';
 
@@ -23,14 +24,22 @@ routes.post(
 routes.put(
   '/:userId',
   celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      userId: Joi.string().required(),
+    [Segments.PARAMS]: Joi.object().keys({
+      userId: Joi.objectId().required(),
     }),
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string(),
       birthDate: Joi.date(),
       email: Joi.string().email(),
-      password: Joi.string().min(6).max(12),
+      password: Joi.object().keys({
+        old: Joi.string().min(6).max(12),
+        new: Joi.string().min(6).max(12).required().when('old', {
+          is: Joi.exist(),
+          then: Joi.optional(),
+          otherwise: Joi.required(),
+        }),
+        confirmation: Joi.string().valid(Joi.ref('new')),
+      }),
     }),
   }),
   usersController.update,
@@ -39,13 +48,23 @@ routes.put(
 routes.get(
   '/:userId',
   celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      userId: Joi.string().required(),
+    [Segments.PARAMS]: Joi.object().keys({
+      userId: Joi.objectId().required(),
     }),
   }),
   usersController.show,
 );
 
 routes.get('/', usersController.index);
+
+routes.delete(
+  '/:userId',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      userId: Joi.objectId().required(),
+    }),
+  }),
+  usersController.delete,
+);
 
 export default routes;

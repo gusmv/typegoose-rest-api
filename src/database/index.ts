@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-import config from "@config/mongo";
+import config from '@config/mongo';
 
-mongoose.set("debug", config.debug);
+mongoose.set('debug', config.debug);
 
 mongoose.connect(config.uri, {
   useNewUrlParser: true,
