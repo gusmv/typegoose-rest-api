@@ -5,6 +5,8 @@ import Mail from './mail';
 
 import IMailDataDTO from './dtos/IMailDataDTO';
 
+import config from '@config/database';
+
 class Queues {
   public email: Queue;
 
@@ -15,7 +17,12 @@ class Queues {
   }
 
   private create(): void {
-    const connection = new IORedis();
+    const { redisdb } = config;
+
+    const connection = new IORedis({
+      host: redisdb.host,
+      port: Number(redisdb.port),
+    });
     this.email = new Queue('emails', { connection });
   }
 

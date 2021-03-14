@@ -1,9 +1,9 @@
 // General configs
 
 export default {
-  env: process.env.ENV || 'development',
-  port: process.env.PORT || 5000,
   url: 'http://localhost', // Front-end's URL
-  secretKey: process.env.KEY || '',
+  env: process.env.ENV || 'development',
+  port: process.env.EXPRESSPORT || 5000,
+  secretKey: process.env.JWTKEY || '',
   expiresIn: '7d',
 };
