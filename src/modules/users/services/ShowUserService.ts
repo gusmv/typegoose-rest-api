@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
 
+import AppException from '@errors/AppException';
+
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
@@ -10,7 +12,7 @@ class ShowUserService {
     const user = await this.repository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new AppException('User not found.');
     }
 
     return user;

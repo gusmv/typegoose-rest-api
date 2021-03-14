@@ -3,6 +3,8 @@ import { hash } from 'bcryptjs';
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
+import AppException from '@errors/AppException';
+
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 class CreateUserService {
@@ -17,7 +19,7 @@ class CreateUserService {
     const userExists = await this.repository.findByEmail(email);
 
     if (userExists) {
-      throw new Error('User already exist.');
+      throw new AppException('User already exist.');
     }
 
     const passwordHashed = await hash(password, 8);

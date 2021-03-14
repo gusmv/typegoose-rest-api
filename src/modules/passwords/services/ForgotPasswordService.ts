@@ -1,6 +1,8 @@
 import TokenRepository from '../repositories/TokenRepository';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 
+import AppException from '@errors/AppException';
+
 import config from '@config/app';
 
 import Queues from '@jobs/index';
@@ -14,7 +16,7 @@ class ForgotPasswordService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new AppException('User not found.');
     }
 
     await this.tokenRepository.deleteByUserId(user.id);

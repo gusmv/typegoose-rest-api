@@ -1,5 +1,7 @@
 import { compare, hash } from 'bcryptjs';
 
+import AppException from '@errors/AppException';
+
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
@@ -12,7 +14,7 @@ class UpdateUserService {
     const user = await this.repository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new AppException('User not found.');
     }
 
     const { password, email } = userData;
@@ -21,7 +23,7 @@ class UpdateUserService {
       const user = await this.repository.findByEmail(email);
 
       if (user && user.id.toString() !== userId.toString()) {
-        throw new Error('Email already in use.');
+        throw new AppException('Email already in use.');
       }
     }
 
@@ -29,7 +31,7 @@ class UpdateUserService {
       const checkOldPassword = await compare(password.old, user.password);
 
       if (!checkOldPassword) {
-        throw new Error('Old password does not match');
+        throw new AppException('Old password does not match');
       }
 
       user.password = await hash(password.new, 8);

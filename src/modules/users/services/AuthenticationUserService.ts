@@ -2,6 +2,8 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { plainToClass } from 'class-transformer';
 
+import AppException from '@errors/AppException';
+
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
@@ -24,13 +26,13 @@ class AuthenticationUserService {
     const user = await this.repository.findByEmail(email);
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new AppException('User not found.');
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error('Email/password does not match');
+      throw new AppException('Email/password does not match');
     }
 
     const token = await sign(

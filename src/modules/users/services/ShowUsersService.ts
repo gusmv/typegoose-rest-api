@@ -1,6 +1,8 @@
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
+import AppException from '@errors/AppException';
+
 class ShowUsersService {
   private repository = UsersRepository;
 
@@ -8,7 +10,7 @@ class ShowUsersService {
     const users = await this.repository.list();
 
     if (!users) {
-      throw new Error('Users not found.');
+      throw new AppException('Users not found.');
     }
 
     return users;

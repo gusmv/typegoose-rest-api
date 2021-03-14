@@ -4,6 +4,7 @@ import handlebars from 'handlebars';
 import nodemailer, { Transporter } from 'nodemailer';
 
 import config from '@config/mail';
+import appConfig from '@config/app';
 
 interface IRequest {
   subject: string;
@@ -16,11 +17,11 @@ class Mail {
   private transporter: Transporter;
 
   constructor() {
-    const { host, port, auth } = config.config;
+    const { host, port, auth } = config.transport;
 
     this.transporter = nodemailer.createTransport({
       host,
-      port,
+      port: Number(port),
       auth,
     });
   }
@@ -38,7 +39,6 @@ class Mail {
         encoding: 'utf-8',
       }),
     );
-    console.log(parseTemplate(variables));
 
     const message = await this.transporter.sendMail({
       from,
@@ -48,8 +48,11 @@ class Mail {
       html: parseTemplate(variables),
     });
 
-    console.log(message.messageId);
-    console.log(nodemailer.getTestMessageUrl(message));
+    if (appConfig.env === 'development') {
+      // Logging on development mode
+      console.log(message.messageId);
+      console.log(nodemailer.getTestMessageUrl(message));
+    }
   }
 }
 
