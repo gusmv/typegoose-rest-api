@@ -6,8 +6,8 @@ import IUsersRepository from '../dtos/IUsersRepository';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 class UsersRepository implements IUsersRepository {
-  async findById(userId: Types.ObjectId): Promise<User | null> {
-    const user = await UserModel.findById(userId);
+  async findById(userId: Types.ObjectId | User): Promise<User | null> {
+    const user = await UserModel.findOne(userId);
 
     return user;
   }

@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import './database';
 import App from './app';
 
-import config from '@config/express';
+import config from '@config/app';
 
 const app = new App();
 

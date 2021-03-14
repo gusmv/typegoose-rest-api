@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import { errors } from 'celebrate';
 
 import routes from './routes';
+import '@jobs/index';
 
 class App {
   public server: Express;

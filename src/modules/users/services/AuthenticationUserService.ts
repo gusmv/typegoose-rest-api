@@ -5,7 +5,7 @@ import { plainToClass } from 'class-transformer';
 import { User } from '../schemas/User';
 import UsersRepository from '../repositories/UsersRepository';
 
-import config from '@config/auth';
+import config from '@config/app';
 
 interface IRequest {
   email: string;
