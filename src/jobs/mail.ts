@@ -16,16 +16,6 @@ interface IRequest {
 class Mail {
   private transporter: Transporter;
 
-  constructor() {
-    const { host, port, auth } = config.transport;
-
-    this.transporter = nodemailer.createTransport({
-      host,
-      port: Number(port),
-      auth,
-    });
-  }
-
   async send({
     subject,
     recipient,
@@ -33,6 +23,27 @@ class Mail {
     variables,
   }: IRequest): Promise<void> {
     const { from } = config;
+
+    if (appConfig.env === 'development') {
+      const { user, pass, smtp } = await nodemailer.createTestAccount();
+
+      config.transport = {
+        host: smtp.host,
+        port: String(smtp.port),
+        auth: {
+          user,
+          pass,
+        },
+      };
+    }
+
+    const { host, port, auth } = config.transport;
+
+    this.transporter = nodemailer.createTransport({
+      host,
+      port: Number(port),
+      auth,
+    });
 
     const parseTemplate = handlebars.compile(
       fs.readFileSync(path.resolve(__dirname, 'views', template), {
@@ -48,6 +59,7 @@ class Mail {
       html: parseTemplate(variables),
     });
 
+    console.log(appConfig.env);
     if (appConfig.env === 'development') {
       // Logging on development mode
       console.log(message.messageId);

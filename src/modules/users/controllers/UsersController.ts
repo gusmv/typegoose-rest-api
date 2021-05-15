@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { Request, Response } from 'express';
-import { plainToClass, classToClass } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { User } from '@modules/users/schemas/User';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
@@ -39,7 +39,7 @@ class UsersController {
       ...req.body,
     });
 
-    return res.json(classToClass(user));
+    return res.json(plainToClass(User, user));
   }
 
   async show(req: Request, res: Response): Promise<Response> {

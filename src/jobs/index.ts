@@ -38,6 +38,7 @@ class Queues {
     // eslint-disable-next-line no-new
     new Worker('emails', async job => {
       const { email: recipient, subject, ...data } = job.data as IMailDataDTO;
+      console.log('running');
 
       const mail = new Mail();
       await mail.send({

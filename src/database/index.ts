@@ -2,10 +2,16 @@ import mongoose from 'mongoose';
 
 import config from '@config/database';
 
-mongoose.set('debug', config.mongodb.debug);
+class Database {
+  async connect() {
+    mongoose.set('debug', config.mongodb.debug);
 
-mongoose.connect(config.mongodb.uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+    await mongoose.connect(config.mongodb.uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+  }
+}
+
+export default new Database();

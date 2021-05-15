@@ -1,7 +1,6 @@
 import { Types } from 'mongoose';
 import { Expose, Exclude } from 'class-transformer';
 import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose';
-
 @modelOptions({
   schemaOptions: {
     collection: 'users',

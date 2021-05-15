@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 import TokenModel, { Token } from '../schemas/Token';
 import { User } from '@modules/users/schemas/User';

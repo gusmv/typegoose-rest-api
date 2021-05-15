@@ -22,6 +22,7 @@ routes.put(
     [Segments.BODY]: Joi.object().keys({
       token: Joi.string().uuid().required(),
       password: Joi.string().required(),
+      confirmation: Joi.string().valid(Joi.ref('password')),
     }),
   }),
   forgotPasswordController.update,
